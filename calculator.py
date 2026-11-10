@@ -7,20 +7,47 @@ class Calculator:
 
     def multiply(self, a, b):
         result = 0
-        for i in range(b): #replaced the range (b+1) with range (b) because range start from 0 not 1
+        for i in range(abs(b)):
             result = self.add(result, a)
+
+        if b < 0:
+            result = -result
+
         return result
 
     def divide(self, a, b):
+        if b == 0:
+            raise ZeroDivisionError("Cannot divide by zero")
+
         result = 0
-        while a+1 > b:
+        negative = (a < 0) != (b < 0)
+
+        a = abs(a)
+        b = abs(b)
+
+        while a >= b:
             a = self.subtract(a, b)
             result += 1
+
+        if negative:
+            result = -result
+
         return result
     
     def modulo(self, a, b):
-        while b <= a:
-            a = a-b
+        if b == 0:
+            raise ZeroDivisionError("Cannot modulo by zero")
+
+        negative = a < 0
+        a = abs(a)
+        b = abs(b)
+
+        while a >= b:
+            a = self.subtract(a, b)
+
+        if negative:
+            a = -a
+
         return a
 
 # Example usage:
@@ -32,3 +59,5 @@ if __name__ == "__main__":
     print("Example: multiplication: ", calc.multiply(2, 3))
     print("Example: division: ", calc.divide(10, 2))
     print("Example: modulo: ", calc.modulo(10, 3))
+
+    print("Example: modulo: ", calc.modulo(-5, 4))
